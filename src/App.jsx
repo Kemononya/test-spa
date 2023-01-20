@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Row, Col, Container,
-} from 'react-bootstrap';
+import { Row, Container } from 'react-bootstrap';
 import Card from './components/Card';
 import { fetchFacts } from './slices/factsSlice';
 
@@ -23,9 +21,7 @@ const App = () => {
       {isLd && (
       <Row xs={1} md={5}>
         {factsLs.map(({ _id, text }) => (
-          <Col key={_id}>
-            <Card text={text} key={_id} />
-          </Col>
+          <Card text={text} key={_id} id={_id} />
         ))}
       </Row>
       )}

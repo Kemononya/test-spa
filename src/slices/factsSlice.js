@@ -14,7 +14,12 @@ export const fetchFacts = createAsyncThunk(
 const factsSlice = createSlice({
   name: 'facts',
   initialState: { factsList: [], isLoading: true },
-  reducers: {},
+  reducers: {
+    removeFact(state, { payload }) {
+      const newFactsList = state.factsList.filter(({ _id }) => _id !== payload);
+      state.factsList = newFactsList;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchFacts.fulfilled, (state, { payload }) => {
