@@ -12,8 +12,8 @@ const FilterBtn = () => {
         variant="info"
         onClick={() => dispatch(actions.switchFilter(!isFilter))}
       >
-        {!isFilter && 'Показать только понравившиеся?'}
-        {isFilter && 'Показать все?'}
+        {!isFilter && 'Показать только понравившиеся'}
+        {isFilter && 'Показать все'}
       </Button>
     </div>
   );
