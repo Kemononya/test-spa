@@ -16,14 +16,19 @@ const factsSlice = createSlice({
   initialState: { factsList: [], isLoading: true },
   reducers: {
     removeFact(state, { payload }) {
-      const newFactsList = state.factsList.filter(({ _id }) => _id !== payload);
+      const newFactsList = state.factsList.filter(({ id }) => id !== payload);
       state.factsList = newFactsList;
+    },
+    changeLike(state, { payload }) {
+      const curFact = state.factsList.find(({ id }) => id === payload.id);
+      curFact.isLike = payload.isLike;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchFacts.fulfilled, (state, { payload }) => {
-        state.factsList = payload;
+        const facts = payload.map(({ _id, text }) => ({ id: _id, text, isLike: false }));
+        state.factsList = facts;
         state.isLoading = true;
       })
       .addCase(fetchFacts.rejected, (state) => {
