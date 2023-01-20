@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Card, Button, Col, Row,
 } from 'react-bootstrap';
@@ -22,7 +21,7 @@ const CardItem = ({ text, id }) => {
           <Col>
             <Button
               variant={isLike ? 'success' : 'secondary'}
-              onClick={() => dispatch(actions.changeLike({ id, isLike: !isLike }))}
+              onClick={() => dispatch(actions.switchLike({ id, isLike: !isLike }))}
             >
               Нравится
             </Button>

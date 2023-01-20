@@ -13,15 +13,18 @@ export const fetchFacts = createAsyncThunk(
 
 const factsSlice = createSlice({
   name: 'facts',
-  initialState: { factsList: [], isLoading: true },
+  initialState: { factsList: [], isLoading: true, isFilter: false },
   reducers: {
     removeFact(state, { payload }) {
       const newFactsList = state.factsList.filter(({ id }) => id !== payload);
       state.factsList = newFactsList;
     },
-    changeLike(state, { payload }) {
+    switchLike(state, { payload }) {
       const curFact = state.factsList.find(({ id }) => id === payload.id);
       curFact.isLike = payload.isLike;
+    },
+    switchFilter(state, { payload }) {
+      state.isFilter = payload;
     },
   },
   extraReducers: (builder) => {
