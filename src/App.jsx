@@ -12,28 +12,28 @@ const App = () => {
     dispatch(fetchFacts());
   }, [dispatch]);
 
-  const { factsLs, isLd, isFlt } = useSelector(({ facts }) => {
-    const { factsList, isLoading, isFilter } = facts;
-    return { factsLs: factsList, isLd: isLoading, isFlt: isFilter };
+  const { factsLs, loadStatus, isFlt } = useSelector(({ facts }) => {
+    const { factsList, loadingStatus, isFilter } = facts;
+    return { factsLs: factsList, loadStatus: loadingStatus, isFlt: isFilter };
   });
 
   return (
     <>
-      {isLd && (
+      {loadStatus === 'idle' && (
       <>
         <h1 className="text-center text-success mt-5">Случайные факты о котиках</h1>
         <FilterBtn />
-        <Container fluid>
-          <Row xs={1} md={5}>
+        <Container fluid style={{ height: '100vh' }}>
+          <Row xs={1} md={5} className="h-100">
             {!isFlt && factsLs.map(({ id, text }) => (
-              <Col key={id}>
+              <Col key={id} className="h-100">
                 <Card text={text} id={id} />
               </Col>
             ))}
             {isFlt && factsLs
               .filter(({ isLike }) => isLike)
               .map(({ id, text }) => (
-                <Col key={id}>
+                <Col key={id} className="h-100">
                   <Card text={text} id={id} />
                 </Col>
               ))}
@@ -41,9 +41,14 @@ const App = () => {
         </Container>
       </>
       )}
-      {!isLd && (
+      {loadStatus === 'failed' && (
       <h1 className="text-center text-danger my-5">
         Ошибка загрузки. Попробуйте перезагрузить страницу.
+      </h1>
+      )}
+      {loadStatus === 'loading' && (
+      <h1 className="text-center my-5">
+        Идёт загрузка. Подождите.
       </h1>
       )}
     </>

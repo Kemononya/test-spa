@@ -2,18 +2,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from '../routes';
+import image1 from '../assets/cat1.jpeg';
+import image2 from '../assets/cat2.jpeg';
+import image3 from '../assets/cat3.jpeg';
+import image4 from '../assets/cat4.jpeg';
+import image5 from '../assets/cat5.jpeg';
 
 export const fetchFacts = createAsyncThunk(
   'facts/fetchFacts',
   async () => {
-    const response = await axios.get(routes.tenFactsPath());
+    const response = await axios.get(routes.fiveFactsPath());
     return response.data;
   },
 );
 
+const images = [image1, image2, image3, image4, image5];
+
 const factsSlice = createSlice({
   name: 'facts',
-  initialState: { factsList: [], isLoading: true, isFilter: false },
+  initialState: { factsList: [], loadingStatus: 'idle', isFilter: false },
   reducers: {
     removeFact(state, { payload }) {
       const newFactsList = state.factsList.filter(({ id }) => id !== payload);
@@ -30,12 +37,18 @@ const factsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchFacts.fulfilled, (state, { payload }) => {
-        const facts = payload.map(({ _id, text }) => ({ id: _id, text, isLike: false }));
+        const facts = payload.map(({ _id, text }, idx) => (
+          {
+            id: _id, text, isLike: false, image: images[idx],
+          }));
         state.factsList = facts;
-        state.isLoading = true;
+        state.loadingStatus = 'idle';
       })
       .addCase(fetchFacts.rejected, (state) => {
-        state.isLoading = false;
+        state.loadingStatus = 'failed';
+      })
+      .addCase(fetchFacts.pending, (state) => {
+        state.loadingStatus = 'loading';
       });
   },
 });
