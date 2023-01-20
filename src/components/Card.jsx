@@ -3,7 +3,8 @@ import {
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../slices/factsSlice';
-// import image from '../assets/cat1.jpeg';
+import LikeImg from './LikeImg';
+import RemoveImg from './RemoveImg';
 
 const CardItem = ({ text, id }) => {
   const dispatch = useDispatch();
@@ -24,17 +25,20 @@ const CardItem = ({ text, id }) => {
       </Card.Body>
       <Card.Footer>
         <Row className="mb-2">
-          <Col>
+          <Col md={4}>
             <Button
-              variant={likeStatus ? 'success' : 'secondary'}
+              variant={likeStatus ? 'success' : 'outline-secondary'}
               onClick={() => dispatch(actions.switchLike({ id, isLike: !likeStatus }))}
             >
-              Нравится
+              <LikeImg />
             </Button>
           </Col>
-          <Col>
-            <Button onClick={() => dispatch(actions.removeFact(id))}>
-              Удалить факт
+          <Col md={{ offset: 5 }}>
+            <Button
+              variant="danger"
+              onClick={() => dispatch(actions.removeFact(id))}
+            >
+              <RemoveImg />
             </Button>
           </Col>
         </Row>
