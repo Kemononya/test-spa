@@ -1,13 +1,29 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import routes from '../routes';
+
+export const fetchFacts = createAsyncThunk(
+  'facts/fetchFacts',
+  async () => {
+    const response = await axios.get(routes.tenFactsPath());
+    return response.data;
+  },
+);
 
 const factsSlice = createSlice({
   name: 'facts',
-  initialState: { factsList: [] },
-  reducers: {
-    addFacts(state, { payload }) {
-      state.factsList = payload;
-    },
+  initialState: { factsList: [], isLoading: true },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchFacts.fulfilled, (state, { payload }) => {
+        state.factsList = payload;
+        state.isLoading = true;
+      })
+      .addCase(fetchFacts.rejected, (state) => {
+        state.isLoading = false;
+      });
   },
 });
 

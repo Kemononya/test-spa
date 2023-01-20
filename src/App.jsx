@@ -1,29 +1,36 @@
 import { useEffect } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions } from './slices/factsSlice';
-import routes from './routes';
+import {
+  Row, Col, Container,
+} from 'react-bootstrap';
+import Card from './components/Card';
+import { fetchFacts } from './slices/factsSlice';
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchFacts = async () => {
-      const response = await axios.get(routes.tenFactsPath());
-      dispatch(actions.addFacts(response.data));
-    };
-    fetchFacts();
+    dispatch(fetchFacts());
   }, [dispatch]);
 
-  const factsList = useSelector(({ facts }) => facts.factsList);
-  console.log(factsList);
+  const { factsLs, isLd } = useSelector(({ facts }) => {
+    const { factsList, isLoading } = facts;
+    return { factsLs: factsList, isLd: isLoading };
+  });
 
   return (
-    <div>
-      {factsList.map(({ _id, text }) => (
-        <div key={_id}>{text}</div>
-      ))}
-    </div>
+    <Container fluid>
+      {isLd && (
+      <Row xs={1} md={5}>
+        {factsLs.map(({ _id, text }) => (
+          <Col key={_id}>
+            <Card text={text} key={_id} />
+          </Col>
+        ))}
+      </Row>
+      )}
+      {!isLd && <h1>Ошибка загрузки. Перезагрузите страницу</h1>}
+    </Container>
   );
 };
 

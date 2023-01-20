@@ -1,5 +1,5 @@
-const apiPath = 'https://cat-fact.herokuapp.com/facts/random?animal_type=cat&amount=';
+const apiPath = 'https://cat-fact.herokuapp.com';
 
 export default {
-  tenFactsPath: () => [apiPath, '10'].join(''),
+  tenFactsPath: () => [apiPath, 'facts/random?animal_type=cat&amount=10'].join('/'),
 };
